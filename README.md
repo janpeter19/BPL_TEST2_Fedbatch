@@ -1,6 +1,6 @@
 # BPL_TEST2_Fedbatch
 
-Basic example of fedbatch cultivation using an FMU from Bioprocess Library. Below script and diagram with a typical simulations of fedbatch growth that you will get at the end of the notebook.
+Basic example of fedbatch cultivation using an FMU from Bioprocess Library *for* Modelica. Below script and diagram with a typical simulations of fedbatch growth that you will get at the end of the notebook.
 
 ![](Fig1_BPL_TEST2_Fedbatch_nominal.png)
 
