@@ -83,7 +83,7 @@ if platform.system() == 'Windows':
    opts = model.simulate_options()
    opts['silent_mode'] = True
 elif platform.system() == 'Linux':
-   print('Linux - run FMU pre-comiled JModelica 2.4')
+   print('Linux - run FMU pre-compiled JModelica 2.4')
    fmu_model ='BPL_TEST2_Fedbatch_linux_jm_cs.fmu'        
    model = load_fmu(fmu_model, log_level=0)
    opts = model.simulate_options()
