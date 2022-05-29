@@ -141,6 +141,9 @@ parLocation['t_start'] = 'dosagescheme.t_start'
 parLocation['F_start'] = 'dosagescheme.F_start'
 parLocation['F_max'] = 'dosagescheme.F_max'
 
+# Extra for describe()
+parLocation['mu'] = 'bioreactor.culture.mu'
+
 # Create list of diagrams to be plotted by simu()
 global diagrams
 diagrams = []
