@@ -1,7 +1,8 @@
-# Figure - Simulation of batch reactor 
+# Figure - Simulation of fedbatch reactor 
 #          with functions added to facilitate explorative simulation work
 #
-# Author: Jan Peter Axelsson
+# GNU General Public License v3.0
+# Copyright (c) 2022, Jan Peter Axelsson, All rights reserved.
 #------------------------------------------------------------------------------------------------------------------
 # 2020-01-30 - Adpated to Python 3 and tested using Docker-Ubuntu FMU
 #            - Introduced locale and setting of it - important for OpenModelica
