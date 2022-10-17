@@ -1,2 +1,6 @@
 
 .DS_Store
+BPL_TEST2_Fedbatch_log.txt
+BPL_TEST2_Fedbatch_result.mat
+xBPL_TEST2_Fedbatch_linux_jm_cs.fmu
+BPL_TEST2_Fedbatch_windows_jm_cs.fmu

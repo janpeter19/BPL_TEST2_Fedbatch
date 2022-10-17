@@ -1,5 +1,6 @@
-# Figure - Simulation of fedbatch reactor 
-#          with functions added to facilitate explorative simulation work
+# Figure - Simulation of batch reactor 
+#          with a set of functions and global variables added to facilitate explorative simulation work.
+#          The general part of this code is called FMU-explore and is planned to be avaialbe as a separate package.
 #
 # GNU General Public License v3.0
 # Copyright (c) 2022, Jan Peter Axelsson, All rights reserved.
@@ -46,6 +47,7 @@
 # 2022-01-16 - Updated with FMU-explore 0.8.7 and adapt for fedbatch
 # 2022-03-28 - Updated to FMU-explore 0.9.0 - model.reset(), and par(), init()
 # 2022-05-28 - Updated to FMU-explore 0.9.1 - describe_general() to handle boolean parameters
+# 2022-10-17 - Updated for FMU-explore 0.9.5 with disp() that do not include extra parameters with parLocation
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -79,7 +81,7 @@ if platform.system() == 'Linux': locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 global fmu_model, model, opts
 if platform.system() == 'Windows':
    print('Windows - run FMU pre-compiled JModelica 2.14')
-   fmu_model ='BPL_TEST2_Fedbatch_windows_jm_cs.fmu'        
+   fmu_model = 'BPL_TEST2_Fedbatch_windows_jm_cs.fmu'        
    model = load_fmu(fmu_model, log_level=0)
    opts = model.simulate_options()
    opts['silent_mode'] = True
@@ -297,14 +299,16 @@ def describe(name, decimals=3):
   
    elif name in ['parts']:
       describe_parts(component_list_minimum)
+      
+   elif name in ['MSL']:
+      describe_MSL()
 
    else:
       describe_general(name, decimals)
 
-      
 #------------------------------------------------------------------------------------------------------------------
 #  General code 
-FMU_explore = 'FMU-explore ver 0.9.1'
+FMU_explore = 'FMU-explore ver 0.9.5'
 #------------------------------------------------------------------------------------------------------------------
 
 # Define function par() for parameter update
@@ -344,7 +348,7 @@ def disp(name='', decimals=3, mode='short'):
    
    if mode in ['short']:
       k = 0
-      for Location in parLocation.values():
+      for Location in [parLocation[k] for k in parDict.keys()]:
          if name in Location:
             if type(model.get(Location)[0]) != np.bool_:
                print(dict_reverser(parLocation)[Location] , ':', np.round(model.get(Location)[0],decimals))
@@ -361,7 +365,7 @@ def disp(name='', decimals=3, mode='short'):
                   print(parName,':', model.get(parLocation[parName])[0])
    if mode in ['long','location']:
       k = 0
-      for Location in parLocation.values():
+      for Location in [parLocation[k] for k in parDict.keys()]:
          if name in Location:
             if type(model.get(Location)[0]) != np.bool_:       
                print(Location,':', dict_reverser(parLocation)[Location] , ':', np.round(model.get(Location)[0],decimals))
@@ -482,7 +486,7 @@ def describe_parts(component_list=[]):
                 finished = True
             else: 
                 i=i+1
-      if name in ['der', 'temp_1']: name = ''
+      if name in ['der', 'temp_1', 'temp_2', 'temp_3', 'temp_4', 'temp_5', 'temp_6', 'temp_7']: name = ''
       return name
     
    variables = list(model.get_model_variables().keys())
@@ -494,6 +498,10 @@ def describe_parts(component_list=[]):
          component_list.append(component)
       
    print(sorted(component_list, key=str.casefold))
+   
+def describe_MSL():
+   """List MSL version and components used"""
+   print('MSL:', model.get('MSL.version')[0],'- used components:', model.get('MSL.usage')[0])
 
 # Describe parameters and variables in the Modelica code
 def describe_general(name, decimals):
@@ -557,12 +565,18 @@ def system_info():
    print('System information')
    print(' -OS:', platform.system())
    print(' -Python:', platform.python_version())
+   try:
+       scipy_ver = scipy.__version__
+       print(' -Scipy:',scipy_ver)
+   except NameError:
+       print(' -Scipy: not installed in the notebook')
    print(' -PyFMI:', version('pyfmi'))
    print(' -FMU by:', model.get_generation_tool())
    print(' -FMI:', model.get_version())
    print(' -Type:', FMU_type)
    print(' -Name:', model.get_name())
    print(' -Generated:', model.get_generation_date_and_time())
+   print(' -MSL:', model.get('MSL.version')[0])
    print(' -Description:', model.get('BPL.version')[0])  
    print(' -Interaction:', FMU_explore)
 
