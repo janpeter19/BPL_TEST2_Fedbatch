@@ -106,7 +106,7 @@ elif platform.system() == 'Linux':
          opts = model.simulate_options()
          opts['silent_mode'] = True  
       if flag_type in ['ME','me']:         
-         fmu_model ='BPL_TEST2_INTERNAL_Fedbatch_linux_om_me.fmu'    
+         fmu_model ='BPL_TEST2_Fedbatch_linux_om_me.fmu'    
          model = load_fmu(fmu_model, log_level=0)
          opts = model.simulate_options() 
          opts["CVode_options"]["verbosity"] = 50  
