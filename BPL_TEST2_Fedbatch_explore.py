@@ -86,6 +86,11 @@ if platform.system() == 'Windows':
    model = load_fmu(fmu_model, log_level=0)
    opts = model.simulate_options()
    opts['silent_mode'] = True
+   flag_vendor = 'JM'
+   flag_type = 'CS'
+   MSL_usage = model.get('MSL.usage')[0]
+   MSL_version = model.get('MSL.version')[0]
+   BPL_version = model.get('BPL.version')[0]
 elif platform.system() == 'Linux':
 #   flag_vendor = input('Linux - run FMU from JModelica (JM) or OpenModelica (OM)?')  
 #   flag_type = input('Linux - run FMU-CS (CS) or ME (ME)?')  
