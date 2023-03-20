@@ -51,7 +51,7 @@
 # 2023-01-17 - Adjusted for OM testing and FMU-explore 0.9.6d
 # 2023-01-21 - Adjusted for FMU-explore 0.9.6e
 # 2023-02-13 - Consolidate FMU-explore to 0.9.6 and means parCheck and par() udpate and simu() with opts as arg
-# 2023-02-24 - Corrected MSL-suage information for OpenModelica Linux
+# 2023-02-24 - Corrected MSL-usage information for OpenModelica Linux
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------

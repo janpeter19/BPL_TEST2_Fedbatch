@@ -50,7 +50,7 @@
 # 2022-10-17 - Updated for FMU-explore 0.9.5 with disp() that do not include extra parameters with parLocation
 # 2023-02-08 - Updated to FMU-explore 0.9.6e
 # 2023-02-13 - Consolidate FMU-explore to 0.9.6 and means parCheck and par() udpate and simu() with opts as arg
-# 2023-02-24 - Corrected MSL-suage information for OpenModelica Linux
+# 2023-02-24 - Corrected MSL-usage information for OpenModelica Linux
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ elif platform.system() == 'Linux':
          fmu_model ='BPL_TEST2_Fedbatch_linux_om_cs.fmu'    
          model = load_fmu(fmu_model, log_level=0) 
       if flag_type in ['ME','me']:         
-         fmu_model ='xBPL_TEST2_Fedbatch_linux_om_me.fmu'    
+         fmu_model ='BPL_TEST2_Fedbatch_linux_om_me.fmu'    
          model = load_fmu(fmu_model, log_level=0)
    else:    
       print('There is no FMU for this platform')
