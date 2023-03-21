@@ -151,6 +151,7 @@ parLocation['V'] = 'bioreactor.V'; key_variables.append(parLocation['V'])
 parLocation['VX'] = 'bioreactor.m[1]'; key_variables.append(parLocation['VX'])
 parLocation['VS'] = 'bioreactor.m[2]'; key_variables.append(parLocation['VS'])
 parLocation['feedtank.V'] = 'feedtank.V'; key_variables.append(parLocation['feedtank.V'])
+parLocation['harvesttank.V'] = 'harvesettank.V'; key_variables.append(parLocation['harvesttank.V'])
 
 # Parameter value check 
 global parCheck; parCheck = []
