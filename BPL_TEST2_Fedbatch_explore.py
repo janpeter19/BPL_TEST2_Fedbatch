@@ -51,6 +51,7 @@
 # 2023-02-08 - Updated to FMU-explore 0.9.6e
 # 2023-02-13 - Consolidate FMU-explore to 0.9.6 and means parCheck and par() udpate and simu() with opts as arg
 # 2023-02-24 - Corrected MSL-usage information for OpenModelica Linux
+# 2023-03-27 - Update to FMU-explore 0.9.7 for PyFMI mature version
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -128,6 +129,7 @@ else:
 
 # Simulation time
 global simulationTime; simulationTime = 5.0
+global prevFinalTime; prevFinalTime = 0
 
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
@@ -140,8 +142,9 @@ component_list_minimum = ['bioreactor', 'bioreactor.culture']
 #------------------------------------------------------------------------------------------------------------------
 
 # Create stateDict that later will be used to store final state and used for initialization in 'cont':
-#stateDict = model.get_states_list()
-global stateDict
+global stateDict; stateDict =  {}
+stateDict = model.get_states_list()
+stateDict.update(timeDiscreteStates)
 
 # Create dictionaries parDict[] and parLocation[]
 global parDict; parDict = {}
@@ -350,7 +353,7 @@ def describe(name, decimals=3):
 
 #------------------------------------------------------------------------------------------------------------------
 #  General code 
-FMU_explore = 'FMU-explore version 0.9.6'
+FMU_explore = 'FMU-explore version 0.9.7'
 #------------------------------------------------------------------------------------------------------------------
 
 # Define function par() for parameter update
@@ -448,6 +451,9 @@ def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
    # Global variables
    global model, parDict, stateDict, prevFinalTime, simulationTime, sim_res, t
    
+   # Simulation flag
+   simulationDone = False
+   
    # Transfer of argument to global variable
    simulationTime = simulationTimeLocal 
       
@@ -470,52 +476,63 @@ def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
       for key in parDict.keys():
          model.set(parLocation[key],parDict[key])   
       # Simulate
-      sim_res = model.simulate(final_time=simulationTime, options=options)      
+      sim_res = model.simulate(final_time=simulationTime, options=options)  
+      simulationDone = True
    elif mode in ['Continued', 'continued', 'cont']:
-      # Set parameters and intial state values:
-      for key in parDict.keys():
-         model.set(parLocation[key],parDict[key])                
-      try: 
-         for key in stateDict.keys():
-            if not key[-1] == ']':
-               model.set(key+'_0', stateDict[key])
-            elif key[-3] == '[':
-               model.set(key[:-3]+'_0'+key[-3:], stateDict[key]) 
-            elif key[-4] == '[':
-               model.set(key[:-4]+'_0'+key[-4:], stateDict[key]) 
-            elif key[-5] == '[':
-               model.set(key[:-5]+'_0'+key[-5:], stateDict[key]) 
-            else:
-               print('The state vecotr has more than 1000 states')
-               break
-      except NameError:
-         print("Simulation is first done with default mode='init'")
-         prevFinalTime = 0
-      # Simulate
-      sim_res = model.simulate(start_time=prevFinalTime,
-                              final_time=prevFinalTime + simulationTime,
-                              options=options)     
+
+      if prevFinalTime == 0: 
+         print("Error: Simulation is first done with default mode = init'")      
+      else:
+         
+         # Set parameters and intial state values:
+         for key in parDict.keys():
+            model.set(parLocation[key],parDict[key])                
+         try: 
+            for key in stateDict.keys():
+               if not key[-1] == ']':
+                  if key[-3:] == 'I.y': 
+                     model.set(key[:-10]+'I_0', stateDict[key]) 
+                  elif key[-3:] == 'D.x': 
+                     model.set(key[:-10]+'D_0', stateDict[key]) 
+                  else:
+                     model.set(key+'_0', stateDict[key])
+               elif key[-3] == '[':
+                  model.set(key[:-3]+'_0'+key[-3:], stateDict[key]) 
+               elif key[-4] == '[':
+                  model.set(key[:-4]+'_0'+key[-4:], stateDict[key]) 
+               elif key[-5] == '[':
+                  model.set(key[:-5]+'_0'+key[-5:], stateDict[key]) 
+               else:
+                  print('The state vecotr has more than 1000 states')
+                  break
+         except NameError:
+            print("Simulation is first done with default mode='init'")
+            prevFinalTime = 0
+         # Simulate
+         sim_res = model.simulate(start_time=prevFinalTime,
+                                 final_time=prevFinalTime + simulationTime,
+                                 options=options) 
+         simulationDone = True             
    else:
       print("Simulation mode not correct")
-    
-   # Extract data
-   t = sim_res['time']
- 
-   # Plot diagrams
-   linetype = next(linecycler)    
-   for command in diagrams: eval(command)
-            
-   # Store final state values stateDict:
-   try: stateDict
-   except NameError:
-      stateDict = {}
-      stateDict = model.get_states_list()
-      stateDict.update(timeDiscreteStates)
-   for key in list(stateDict.keys()):
-      stateDict[key] = model.get(key)[0]        
 
-   # Store time from where simulation will start next time
-   prevFinalTime = model.time
+   if simulationDone:
+    
+      # Extract data
+      t = sim_res['time']
+ 
+      # Plot diagrams
+      linetype = next(linecycler)    
+      for command in diagrams: eval(command)
+            
+      # Store final state values stateDict:
+      for key in list(stateDict.keys()): stateDict[key] = model.get(key)[0]        
+
+      # Store time from where simulation will start next time
+      prevFinalTime = model.time
+   
+   else:
+      print('Error: No simulation done')
       
 # Describe model parts of the combined system
 def describe_parts(component_list=[]):
