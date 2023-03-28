@@ -52,6 +52,7 @@
 # 2023-02-13 - Consolidate FMU-explore to 0.9.6 and means parCheck and par() udpate and simu() with opts as arg
 # 2023-02-24 - Corrected MSL-usage information for OpenModelica Linux
 # 2023-03-27 - Update to FMU-explore 0.9.7 for PyFMI mature version
+# 2023-03-28 - Adjustment of simu()
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -443,10 +444,8 @@ def show(diagrams=diagrams):
    for command in diagrams: eval(command)
 
 # Simulation
-def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
-         diagrams=diagrams,timeDiscreteStates=timeDiscreteStates):         
-   """Model loaded and given intial values and parameter before,
-      and plot window also setup before."""
+def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, diagrams=diagrams):         
+   """Model loaded and given intial values and parameter before, and plot window also setup before."""
     
    # Global variables
    global model, parDict, stateDict, prevFinalTime, simulationTime, sim_res, t
@@ -487,27 +486,25 @@ def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
          # Set parameters and intial state values:
          for key in parDict.keys():
             model.set(parLocation[key],parDict[key])                
-         try: 
-            for key in stateDict.keys():
-               if not key[-1] == ']':
-                  if key[-3:] == 'I.y': 
-                     model.set(key[:-10]+'I_0', stateDict[key]) 
-                  elif key[-3:] == 'D.x': 
-                     model.set(key[:-10]+'D_0', stateDict[key]) 
-                  else:
-                     model.set(key+'_0', stateDict[key])
-               elif key[-3] == '[':
-                  model.set(key[:-3]+'_0'+key[-3:], stateDict[key]) 
-               elif key[-4] == '[':
-                  model.set(key[:-4]+'_0'+key[-4:], stateDict[key]) 
-               elif key[-5] == '[':
-                  model.set(key[:-5]+'_0'+key[-5:], stateDict[key]) 
+
+         for key in stateDict.keys():
+            if not key[-1] == ']':
+               if key[-3:] == 'I.y': 
+                  model.set(key[:-10]+'I_0', stateDict[key]) 
+               elif key[-3:] == 'D.x': 
+                  model.set(key[:-10]+'D_0', stateDict[key]) 
                else:
-                  print('The state vecotr has more than 1000 states')
-                  break
-         except NameError:
-            print("Simulation is first done with default mode='init'")
-            prevFinalTime = 0
+                  model.set(key+'_0', stateDict[key])
+            elif key[-3] == '[':
+               model.set(key[:-3]+'_0'+key[-3:], stateDict[key]) 
+            elif key[-4] == '[':
+               model.set(key[:-4]+'_0'+key[-4:], stateDict[key]) 
+            elif key[-5] == '[':
+               model.set(key[:-5]+'_0'+key[-5:], stateDict[key]) 
+            else:
+               print('The state vecotr has more than 1000 states')
+               break
+
          # Simulate
          sim_res = model.simulate(start_time=prevFinalTime,
                                  final_time=prevFinalTime + simulationTime,

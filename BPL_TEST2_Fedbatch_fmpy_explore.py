@@ -14,7 +14,8 @@
 # 2023-03-20 - Update FMU-explore for FMPy 0.9.7b
 # 2023-03-21 - Ensured that all states are logged by using key_variables for now
 # 2023-03-23 - Update FMU-explore 0.9.7c
-# 2023-03-27 - Update FMU-explore 0.9.7 and now amture version
+# 2023-03-27 - Update FMU-explore 0.9.7 
+# 2023-03-28 - Modification around options and corresponding for simu() - call it still 0.9.7
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -67,18 +68,12 @@ elif platform.system() == 'Linux':
       print('There is no FMU for this platform')
 
 # Provide various opts-profiles
-#if flag_type in ['CS', 'cs']:
-#   opts_std = model.simulate_options()
-#   opts_std['silent_mode'] = True
-#   opts_std['ncp'] = 500 
-#   opts_std['result_handling'] = 'binary'     
-#elif flag_type in ['ME', 'me']:
-#   opts_std = model.simulate_options()
-#   opts_std["CVode_options"]["verbosity"] = 50 
-#   opts_std['ncp'] = 500 
-#   opts_std['result_handling'] = 'binary'  
-#else:    
-#   print('There is no FMU for this platform')
+if flag_type in ['CS', 'cs']:
+   opts_std = {'NCP': 500}
+elif flag_type in ['ME', 'me']:
+   opts_std = {'NCP': 500}
+else:    
+   print('There is no FMU for this platform')
   
 # Provide various MSL and BPL versions
 if flag_vendor in ['JM', 'jm']:
@@ -477,11 +472,16 @@ def show(diagrams=diagrams):
    for command in diagrams: eval(command)
 
 # Define simulation
-def simu(simulationTime=simulationTime, mode='Initial', diagrams=diagrams, output_interval=None):
+def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagrams=diagrams):
+   """Model loaded and given intial values and parameter before, and plot window also setup before."""   
+   
+   # Global variables
    global sim_res, prevFinalTime, stateDict, stateDictInitial, stateDictInitialLoc, start_values
    
+   # Simulation flag
    simulationDone = False
    
+   # Internal help function to extract variables to be stored
    def extract_variables(diagrams):
        output = []
        variables = [v for v in model_description.modelVariables if v.causality == 'local']
@@ -502,7 +502,7 @@ def simu(simulationTime=simulationTime, mode='Initial', diagrams=diagrams, outpu
          validate = False,
          start_time = 0,
          stop_time = simulationTime,
-         output_interval = output_interval,
+         output_interval = simulationTime/options['NCP'],
          record_events = True,
          start_values = start_values,
          fmi_call_logger = None,
@@ -538,7 +538,7 @@ def simu(simulationTime=simulationTime, mode='Initial', diagrams=diagrams, outpu
             validate = False,
             start_time = prevFinalTime,
             stop_time = prevFinalTime + simulationTime,
-            output_interval = output_interval,
+            output_interval = simulationTime/options['NCP'],
             record_events = True,
             start_values = start_values,
             fmi_call_logger = None,
