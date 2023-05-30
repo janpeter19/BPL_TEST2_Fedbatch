@@ -614,7 +614,7 @@ def BPL_info():
    print(' - newplot()   - make a new plot')
    print(' - show()      - show plot from previous simulation')
    print(' - disp()      - display parameters and initial values from the last simulation')
-   print(' - describe()  - describe culture, broth, parameters, variables with values / units')
+   print(' - describe()  - describe culture, broth, parameters, variables with values/units')
    print()
    print('Note that both disp() and describe() takes values from the last simulation')
    print()
