@@ -638,6 +638,7 @@ def BPL_info():
    print(' - describe()  - describe culture, broth, parameters, variables with values/units')
    print()
    print('Note that both disp() and describe() takes values from the last simulation')
+   print('and the command process_diagram() brings up the main configuration')
    print()
    print('Brief information about a command by help(), eg help(simu)') 
    print('Key system information is listed with the command system_info()')

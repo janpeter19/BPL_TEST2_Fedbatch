@@ -96,7 +96,7 @@ global simulationTime; simulationTime = 5.0
 global prevFinalTime; prevFinalTime = 0
 
 # Provide process diagram on disk
-fmu_process_diagram ='BPL_TEST2_Batch_process_diagram_om.png'
+fmu_process_diagram ='BPL_TEST2_Fedbatch_process_diagram_om.png'
 
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
@@ -672,6 +672,7 @@ def BPL_info():
    print(' - describe()  - describe culture, broth, parameters, variables with values/units')
    print()
    print('Note that both disp() and describe() takes values from the last simulation')
+   print('and the command process_diagram() brings up the main configuration')
    print()
    print('Brief information about a command by help(), eg help(simu)') 
    print('Key system information is listed with the command system_info()')
