@@ -18,6 +18,7 @@
 # 2023-03-28 - Modification around options and corresponding for simu() - call it still 0.9.7
 # 2023-04-20 - Compiled for Ubuntu 20.04 and changed BPL_version
 # 2023-05-31 - Adjusted to from importlib.meetadata import version
+# 2023-09-11 - Updated to FMU-explore 0.9.8 and introduced proces diagram
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -29,12 +30,12 @@ import sys
 import platform
 import locale
 import numpy as np 
-import matplotlib.pyplot as plt 
-
+import matplotlib.pyplot as plt
+import matplotlib.image as img
+import zipfile 
 from fmpy import simulate_fmu
 from fmpy import read_model_description
 import fmpy as fmpy
-
 from itertools import cycle
 from importlib.metadata import version 
 
@@ -93,6 +94,9 @@ else:
 # Simulation time
 global simulationTime; simulationTime = 5.0
 global prevFinalTime; prevFinalTime = 0
+
+# Provide process diagram on disk
+fmu_process_diagram ='BPL_TEST2_Batch_process_diagram_om.png'
 
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
@@ -345,7 +349,7 @@ def describe(name, decimals=3):
 
 #------------------------------------------------------------------------------------------------------------------
 #  General code 
-FMU_explore = 'FMU-explore for FMPy version 0.9.7'
+FMU_explore = 'FMU-explore for FMPy version 0.9.8'
 #------------------------------------------------------------------------------------------------------------------
 
 # Define function par() for parameter update
@@ -640,6 +644,20 @@ def describe_general(name, decimals):
             print(description, ':', value)     
       else:
          print(description, ':', np.round(value, decimals), '[',unit,']')
+
+# Plot process diagram
+def process_diagram(fmu_model=fmu_model, fmu_process_diagram=fmu_process_diagram):   
+   try:
+       process_diagram = zipfile.ZipFile(fmu_model, 'r').open('documentation/processDiagram.png')
+   except KeyError:
+       print('No processDiagram.png file in the FMU, but try the file on disk.')
+       process_diagram = fmu_process_diagram
+   try:
+       plt.imshow(img.imread(process_diagram))
+       plt.axis('off')
+       plt.show()
+   except FileNotFoundError:
+       print('And no such file on disk either')
          
 # Describe framework
 def BPL_info():
