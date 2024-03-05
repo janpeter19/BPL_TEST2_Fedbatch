@@ -188,7 +188,7 @@ parCheck.append("parDict['Ks'] > 0")
 parCheck.append("parDict['V_start'] > 0")
 parCheck.append("parDict['VX_start'] >= 0")
 parCheck.append("parDict['VS_start'] >= 0")
-parCheck.append("parDict['t_start'] >= 0")
+parCheck.append("parDict['t_startExp'] >= 0")
 
 # Create list of diagrams to be plotted by simu()
 global diagrams
