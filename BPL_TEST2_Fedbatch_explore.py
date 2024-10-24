@@ -59,6 +59,7 @@
 # 2024-03-04 - Update FMU-explore 0.9.9 - now with _0 replaced with _start everywhere
 # 2024-05-12 - Polish the scirpt
 # 2024-05-20 - Updated the OpenModelica version to 1.23.0-dev
+# 2024-10-24 - Update BPL 2.2.2 - GUI
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -134,7 +135,7 @@ if flag_vendor in ['JM', 'jm']:
 elif flag_vendor in ['OM', 'om']:
    MSL_usage = '3.2.3 - used components: RealInput, RealOutput' 
    MSL_version = '3.2.3'
-   BPL_version = 'Bioprocess Library version 2.2.1 - GUI' 
+   BPL_version = 'Bioprocess Library version 2.2.2 - GUI' 
 else:    
    print('There is no FMU for this platform')
 
