@@ -96,10 +96,7 @@ if platform.system() == 'Windows':
    flag_type = 'CS'
    fmu_model ='BPL_TEST2_Fedbatch_windows_jm_cs.fmu'        
    model = load_fmu(fmu_model, log_level=0)  
-elif platform.system() == 'Linux':
-#   flag_vendor = input('Linux - run FMU from JModelica (JM) or OpenModelica (OM)?')  
-#   flag_type = input('Linux - run FMU-CS (CS) or ME (ME)?')  
-#   print()   
+elif platform.system() == 'Linux': 
    flag_vendor = 'OM'
    flag_type = 'ME'
    if flag_vendor in ['OM','om']:
