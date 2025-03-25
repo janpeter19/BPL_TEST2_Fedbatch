@@ -636,7 +636,7 @@ def process_diagram(fmu_model=fmu_model, fmu_process_diagram=fmu_process_diagram
 # Describe framework
 def BPL_info():
    print()
-   print('Model for bioreactor has been setup. Key commands:')
+   print('Model for the process has been setup. Key commands:')
    print(' - par()       - change of parameters and initial values')
    print(' - init()      - change initial values only')
    print(' - simu()      - simulate and plot')
