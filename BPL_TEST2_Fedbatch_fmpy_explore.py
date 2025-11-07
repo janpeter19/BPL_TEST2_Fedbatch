@@ -28,6 +28,7 @@
 # 2024-11-07 - Update BPL 2.3.0
 # 2025-06-12 - Test MSL 4.1.0 with OpenModelica genreated FMU
 # 2025-07-29 - Update BPL 2.3.1
+# 2025-11-07 - FMU-explore 1.0.2
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -58,7 +59,7 @@ if platform.system() == 'Linux': locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 #------------------------------------------------------------------------------------------------------------------
 
 # Provde the right FMU and load for different platforms in user dialogue:
-global fmu_model, model
+global model
 if platform.system() == 'Windows':
    print('Windows - run FMU pre-compiled JModelica 2.14')
    flag_vendor = 'JM'
@@ -66,9 +67,6 @@ if platform.system() == 'Windows':
    fmu_model ='BPL_TEST2_Fedbatch_windows_jm_cs.fmu'   
    model_description = read_model_description(fmu_model)     
 elif platform.system() == 'Linux':
-#   flag_vendor = input('Linux - run FMU from JModelica (JM) or OpenModelica (OM)?')  
-#   flag_type = input('Linux - run FMU-CS (CS) or ME (ME)?')  
-#   print()   
    flag_vendor = 'OM'
    flag_type = 'ME'
    if flag_vendor in ['OM','om']:
@@ -116,11 +114,11 @@ component_list_minimum = ['bioreactor', 'bioreactor.culture']
 fmu_process_diagram ='BPL_TEST2_Fedbatch_process_diagram_om.png'
 
 #------------------------------------------------------------------------------------------------------------------
-#  Specific application constructs: stateDict, parDict, diagrams, newplot(), describe()
+#  Specific application constructs: stateDict, parValue, parLocation, parCheck, diagrams, newplot(), describe()
 #------------------------------------------------------------------------------------------------------------------
 
 # Create stateDict that later will be used to store final state and used for initialization in 'cont':
-global stateDict; stateDict =  {}
+stateDict =  {}
 stateDict = {variable.derivative.name:None for variable in model_description.modelVariables \
                                             if variable.derivative is not None}
 stateDict.update(timeDiscreteStates) 
@@ -147,24 +145,24 @@ for key in stateDict.keys():
 global stateDictInitialLoc; stateDictInitialLoc = {}
 for value in stateDictInitial.values():
     stateDictInitialLoc[value] = value
-# Create dictionaries parDict[] and parLocation[]
-global parDict; parDict = {}
-parDict['V_start'] = 1.0
-parDict['VX_start'] = 1.0
-parDict['VS_start'] = 10.0
+# Create dictionaries parValue[] and parLocation[]
+parValue = {}
+parValue['V_start'] = 1.0
+parValue['VX_start'] = 1.0
+parValue['VS_start'] = 10.0
 
-parDict['Y'] = 0.5
-parDict['qSmax'] = 1.0
-parDict['Ks'] = 0.1
+parValue['Y'] = 0.5
+parValue['qSmax'] = 1.0
+parValue['Ks'] = 0.1
 
-parDict['feedtank.S_in'] = 300.0
-parDict['feedtank.V_start'] = 10.0
-parDict['mu_feed'] = 0.10
-parDict['t_startExp'] = 3.0
-parDict['F_startExp'] = 1.33e-3
-parDict['F_max'] = 0.3
+parValue['feedtank.S_in'] = 300.0
+parValue['feedtank.V_start'] = 10.0
+parValue['mu_feed'] = 0.10
+parValue['t_startExp'] = 3.0
+parValue['F_startExp'] = 1.33e-3
+parValue['F_max'] = 0.3
 
-global parLocation; parLocation = {}
+parLocation = {}
 parLocation['V_start'] = 'bioreactor.V_start'
 parLocation['VX_start'] = 'bioreactor.m_start[1]' 
 parLocation['VS_start'] = 'bioreactor.m_start[2]' 
@@ -191,14 +189,14 @@ parLocation['feedtank.V'] = 'feedtank.V'; key_variables.append(parLocation['feed
 parLocation['harvesttank.V'] = 'harvesettank.V'; key_variables.append(parLocation['harvesttank.V'])
 
 # Parameter value check 
-global parCheck; parCheck = []
-parCheck.append("parDict['Y'] > 0")
-parCheck.append("parDict['qSmax'] > 0")
-parCheck.append("parDict['Ks'] > 0")
-parCheck.append("parDict['V_start'] > 0")
-parCheck.append("parDict['VX_start'] >= 0")
-parCheck.append("parDict['VS_start'] >= 0")
-parCheck.append("parDict['t_startExp'] >= 0")
+parCheck = []
+parCheck.append("parValue['Y'] > 0")
+parCheck.append("parValue['qSmax'] > 0")
+parCheck.append("parValue['Ks'] > 0")
+parCheck.append("parValue['V_start'] > 0")
+parCheck.append("parValue['VX_start'] >= 0")
+parCheck.append("parValue['VS_start'] >= 0")
+parCheck.append("parValue['t_startExp'] >= 0")
 
 # Create list of diagrams to be plotted by simu()
 global diagrams
@@ -361,20 +359,20 @@ def describe(name, decimals=3):
 
 #------------------------------------------------------------------------------------------------------------------
 #  General code 
-FMU_explore = 'FMU-explore for FMPy version 1.0.1'
+FMU_explore = 'FMU-explore for FMPy version 1.0.2'
 #------------------------------------------------------------------------------------------------------------------
 
 # Define function par() for parameter update
-def par(parDict=parDict, parCheck=parCheck, parLocation=parLocation, *x, **x_kwarg):
-   """ Set parameter values if available in the predefined dictionaryt parDict. """
+def par(*x, parValue=parValue, parCheck=parCheck, parLocation=parLocation, **x_kwarg):
+   """ Set parameter values if available in the predefined dictionaryt parValue. """
    x_kwarg.update(*x)
    x_temp = {}
    for key in x_kwarg.keys():
-      if key in parDict.keys():
+      if key in parValue.keys():
          x_temp.update({key: x_kwarg[key]})
       else:
          print('Error:', key, '- seems not an accessible parameter - check the spelling')
-   parDict.update(x_temp)
+   parValue.update(x_temp)
    
    parErrors = [requirement for requirement in parCheck if not(eval(requirement))]
    if not parErrors == []:
@@ -382,7 +380,7 @@ def par(parDict=parDict, parCheck=parCheck, parLocation=parLocation, *x, **x_kwa
       for index, item in enumerate(parErrors): print(item)
 
 # Define function init() for initial values update
-def init(parDict=parDict, *x, **x_kwarg):
+def init(*x, parValue=parValue,  **x_kwarg):
    """ Set initial values and the name should contain string '_start' to be accepted.
        The function can handle general parameter string location names if entered as a dictionary. """
    x_kwarg.update(*x)
@@ -392,7 +390,7 @@ def init(parDict=parDict, *x, **x_kwarg):
          x_init.update({key: x_kwarg[key]})
       else:
          print('Error:', key, '- seems not an initial value, use par() instead - check the spelling')
-   parDict.update(x_init)
+   parValue.update(x_init)
 
 # Define fuctions similar to pyfmi model.get(), model.get_variable_descirption(), model.get_variable_unit()
 def model_get(parLoc, model_description=model_description):
@@ -401,28 +399,27 @@ def model_get(parLoc, model_description=model_description):
    for k in range(len(par_var)):
       if par_var[k].name == parLoc:
          try:
-            if (par_var[k].causality in ['local']) & (par_var[k].variability in ['constant']):
-               value = float(par_var[k].start)                 
-            elif par_var[k].causality in ['parameter']: 
-               value = float(par_var[k].start)  
-            elif par_var[k].causality in ['calculatedParameter']: 
-               value = float(sim_res[par_var[k].name][0]) 
-            elif par_var[k].name in start_values.keys():
-               value = start_values[par_var[k].name]   
+            if par_var[k].name in start_values.keys():
+                  value = start_values[par_var[k].name]
+            elif par_var[k].variability in ['constant', 'fixed']: 
+               if par_var[k].type in ['Integer', 'Real']: 
+                  value = float(par_var[k].start)      
+               if par_var[k].type in ['String']: 
+                  value = par_var[k].start                        
             elif par_var[k].variability == 'continuous':
                try:
                   timeSeries = sim_res[par_var[k].name]
-                  value = float(timeSeries[-1])
+                  value = timeSeries[-1]
                except (AttributeError, ValueError):
                   value = None
                   print('Variable not logged')
             else:
                value = None
          except NameError:
-            print('Error: Information available after first simulation')
+            print('Error: Information available after first simution')
             value = None          
    return value
-
+   
 def model_get_variable_description(parLoc, model_description=model_description):
    """ Function corresponds to pyfmi model.get_variable_description() but returns just a value and not a list"""
    par_var = model_description.modelVariables
@@ -438,7 +435,7 @@ def model_get_variable_unit(parLoc, model_description=model_description):
    return value[0]
       
 # Define function disp() for display of initial values and parameters
-def disp(name='', decimals=3, mode='short'):
+def disp(name='', decimals=3, mode='short', parValue=parValue, parLocation=parLocation):
    """ Display intial values and parameters in the model that include "name" and is in parLocation list.
        Note, it does not take the value from the dictionary par but from the model. """
    
@@ -448,7 +445,7 @@ def disp(name='', decimals=3, mode='short'):
    
    if mode in ['short']:
       k = 0
-      for Location in [parLocation[k] for k in parDict.keys()]:
+      for Location in [parLocation[k] for k in parValue.keys()]:
          if name in Location:
             if type(model_get(Location)) != np.bool_:
                print(dict_reverser(parLocation)[Location] , ':', np.round(model_get(Location),decimals))
@@ -457,7 +454,7 @@ def disp(name='', decimals=3, mode='short'):
          else:
             k = k+1
       if k == len(parLocation):
-         for parName in parDict.keys():
+         for parName in parValue.keys():
             if name in parName:
                if type(model_get(Location)) != np.bool_:
                   print(parName,':', np.round(model_get(parLocation[parName]),decimals))
@@ -466,14 +463,14 @@ def disp(name='', decimals=3, mode='short'):
 
    if mode in ['long','location']:
       k = 0
-      for Location in [parLocation[k] for k in parDict.keys()]:
+      for Location in [parLocation[k] for k in parValue.keys()]:
          if name in Location:
             if type(model_get(Location)) != np.bool_:       
                print(Location,':', dict_reverser(parLocation)[Location] , ':', np.round(model_get(Location),decimals))
          else:
             k = k+1
       if k == len(parLocation):
-         for parName in parDict.keys():
+         for parName in parValue.keys():
             if name in parName:
                if type(model_get(Location)) != np.bool_:
                   print(parLocation[parName], ':', dict_reverser(parLocation)[Location], ':', parName,':', 
@@ -494,11 +491,13 @@ def show(diagrams=diagrams):
    for command in diagrams: eval(command)
 
 # Define simulation
-def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagrams=diagrams):
+def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagrams=diagrams, \
+         timeDiscreteStates=timeDiscreteStates, stateDict=stateDict, \
+         parValue=parValue, parLocation=parLocation, fmu_model=fmu_model):  
    """Model loaded and given intial values and parameter before, and plot window also setup before."""   
    
    # Global variables
-   global sim_res, prevFinalTime, stateDict, stateDictInitial, stateDictInitialLoc, start_values
+   global sim_res, prevFinalTime, stateDictInitial, stateDictInitialLoc, start_values
    
    # Simulation flag
    simulationDone = False
@@ -516,7 +515,7 @@ def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagra
    # Run simulation
    if mode in ['Initial', 'initial', 'init']: 
       
-      start_values = {parLocation[k]:parDict[k] for k in parDict.keys()}
+      start_values = {parLocation[k]:parValue[k] for k in parValue.keys()}
       
       # Simulate
       sim_res = simulate_fmu(
@@ -539,20 +538,20 @@ def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagra
          print("Error: Simulation is first done with default mode = init'")
          
       else:         
-         # Update parDictMod and create parLocationMod
-         parDictRed = parDict.copy()
+         # Update parValueMod and create parLocationMod
+         parValueRed = parValue.copy()
          parLocationRed = parLocation.copy()
-         for key in parDict.keys():
+         for key in parValue.keys():
             if parLocation[key] in stateDictInitial.values(): 
-               del parDictRed[key]  
+               del parValueRed[key]  
                del parLocationRed[key]
          parLocationMod = dict(list(parLocationRed.items()) + list(stateDictInitialLoc.items()))
    
-         # Create parDictMod and parLocationMod
-         parDictMod = dict(list(parDictRed.items()) + 
+         # Create parValueMod and parLocationMod
+         parValueMod = dict(list(parValueRed.items()) + 
             [(stateDictInitial[key], stateDict[key]) for key in stateDict.keys()])      
 
-         start_values = {parLocationMod[k]:parDictMod[k] for k in parDictMod.keys()}
+         start_values = {parLocationMod[k]:parValueMod[k] for k in parValueMod.keys()}
   
          # Simulate
          sim_res = simulate_fmu(
@@ -624,7 +623,7 @@ def describe_MSL(flag_vendor=flag_vendor):
    print('MSL:', MSL_usage)
  
 # Describe parameters and variables in the Modelica code
-def describe_general(name, decimals):
+def describe_general(name, decimals, parLocation=parLocation):
   
    if name == 'time':
       description = 'Time'
