@@ -156,13 +156,13 @@ component_list_minimum = ['bioreactor', 'bioreactor.culture']
 fmu_process_diagram ='BPL_TEST2_Fedbatch_process_diagram_om.png'
 
 #------------------------------------------------------------------------------------------------------------------
-#  Specific application constructs: stateDict, parValue, parLocation, parCheck diagrams, newplot(), describe()
+#  Specific application constructs: stateValue, parValue, parLocation, parCheck diagrams, newplot(), describe()
 #------------------------------------------------------------------------------------------------------------------
 
-# Create stateDict that later will be used to store final state and used for initialization in 'cont':
-stateDict =  {}
-stateDict = model.get_states_list()
-stateDict.update(timeDiscreteStates)
+# Create stateValue that later will be used to store final state and used for initialization in 'cont':
+stateValue =  {}
+stateValue = model.get_states_list()
+stateValue.update(timeDiscreteStates)
 
 # Create dictionaries parValue[] and parLocation[]
 parValue = {}
@@ -486,7 +486,7 @@ def show(diagrams=diagrams):
 
 # Simulation
 def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
-         diagrams=diagrams,timeDiscreteStates=timeDiscreteStates, stateDict=stateDict, \
+         diagrams=diagrams,timeDiscreteStates=timeDiscreteStates, stateValue=stateValue, \
          parValue=parValue, parLocation=parLocation, fmu_model=fmu_model):         
    """Model loaded and given intial values and parameter before,
       and plot window also setup before."""
@@ -531,20 +531,20 @@ def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
          for key in parValue.keys():
             model.set(parLocation[key],parValue[key])                
 
-         for key in stateDict.keys():
+         for key in stateValue.keys():
             if not key[-1] == ']':
                if key[-3:] == 'I.y': 
-                  model.set(key[:-10]+'I_start', stateDict[key]) 
+                  model.set(key[:-10]+'I_start', stateValue[key]) 
                elif key[-3:] == 'D.x': 
-                  model.set(key[:-10]+'D_start', stateDict[key]) 
+                  model.set(key[:-10]+'D_start', stateValue[key]) 
                else:
-                  model.set(key+'_start', stateDict[key])
+                  model.set(key+'_start', stateValue[key])
             elif key[-3] == '[':
-               model.set(key[:-3]+'_start'+key[-3:], stateDict[key]) 
+               model.set(key[:-3]+'_start'+key[-3:], stateValue[key]) 
             elif key[-4] == '[':
-               model.set(key[:-4]+'_start'+key[-4:], stateDict[key]) 
+               model.set(key[:-4]+'_start'+key[-4:], stateValue[key]) 
             elif key[-5] == '[':
-               model.set(key[:-5]+'_start'+key[-5:], stateDict[key]) 
+               model.set(key[:-5]+'_start'+key[-5:], stateValue[key]) 
             else:
                print('The state vecotr has more than 1000 states')
                break
@@ -566,8 +566,8 @@ def simu(simulationTimeLocal=simulationTime, mode='Initial', options=opts_std, \
       linetype = next(linecycler)    
       for command in diagrams: eval(command)
             
-      # Store final state values stateDict:
-      for key in list(stateDict.keys()): stateDict[key] = model.get(key)[0]        
+      # Store final state values stateValue:
+      for key in list(stateValue.keys()): stateValue[key] = model.get(key)[0]        
 
       # Store time from where simulation will start next time
       prevFinalTime = model.time
