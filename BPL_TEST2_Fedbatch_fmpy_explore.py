@@ -29,6 +29,7 @@
 # 2025-06-12 - Test MSL 4.1.0 with OpenModelica genreated FMU
 # 2025-07-29 - Update BPL 2.3.1
 # 2025-11-07 - FMU-explore 1.0.2
+# 2025-11-16 - FMU-explore 1.0.2 corrected
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -59,7 +60,6 @@ if platform.system() == 'Linux': locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 #------------------------------------------------------------------------------------------------------------------
 
 # Provde the right FMU and load for different platforms in user dialogue:
-global model_description
 if platform.system() == 'Windows':
    print('Windows - run FMU pre-compiled JModelica 2.14')
    flag_vendor = 'JM'
@@ -81,9 +81,9 @@ elif platform.system() == 'Linux':
 
 # Provide various opts-profiles
 if flag_type in ['CS', 'cs']:
-   opts_std = {'ncp': 500}
+   opts_std = {'NCP': 500}
 elif flag_type in ['ME', 'me']:
-   opts_std = {'ncp': 500}
+   opts_std = {'NCP': 500}
 else:    
    print('There is no FMU for this platform')
   
@@ -101,8 +101,8 @@ else:
    print('There is no FMU for this platform')
 
 # Simulation time
-global simulationTime; simulationTime = 5.0
-global prevFinalTime; prevFinalTime = 0
+simulationTime = 5.0
+prevFinalTime = 0
 
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
@@ -180,13 +180,13 @@ parLocation['F_startExp'] = 'dosagescheme.F_startExp'
 parLocation['F_max'] = 'dosagescheme.F_max'
 
 # Extra only for describe()
-global key_variables; key_variables = []
-parLocation['mu'] = 'bioreactor.culture.mu'; key_variables.append(parLocation['mu'])
-parLocation['V'] = 'bioreactor.V'; key_variables.append(parLocation['V'])
-parLocation['VX'] = 'bioreactor.m[1]'; key_variables.append(parLocation['VX'])
-parLocation['VS'] = 'bioreactor.m[2]'; key_variables.append(parLocation['VS'])
-parLocation['feedtank.V'] = 'feedtank.V'; key_variables.append(parLocation['feedtank.V'])
-parLocation['harvesttank.V'] = 'harvesettank.V'; key_variables.append(parLocation['harvesttank.V'])
+keyVariables = []
+parLocation['mu'] = 'bioreactor.culture.mu'; keyVariables.append(parLocation['mu'])
+parLocation['V'] = 'bioreactor.V'; keyVariables.append(parLocation['V'])
+parLocation['VX'] = 'bioreactor.m[1]'; keyVariables.append(parLocation['VX'])
+parLocation['VS'] = 'bioreactor.m[2]'; keyVariables.append(parLocation['VS'])
+parLocation['feedtank.V'] = 'feedtank.V'; keyVariables.append(parLocation['feedtank.V'])
+parLocation['harvesttank.V'] = 'harvesettank.V'; keyVariables.append(parLocation['harvesttank.V'])
 
 # Parameter value check 
 parCheck = []
@@ -199,7 +199,6 @@ parCheck.append("parValue['VS_start'] >= 0")
 parCheck.append("parValue['t_startExp'] >= 0")
 
 # Create list of diagrams to be plotted by simu()
-global diagrams
 diagrams = []
 
 # Define standard diagrams
@@ -524,11 +523,11 @@ def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagra
          validate = False,
          start_time = 0,
          stop_time = simulationTime,
-         output_interval = simulationTime/options['ncp'],
+         output_interval = simulationTime/options['NCP'],
          record_events = True,
          start_values = start_values,
          fmi_call_logger = None,
-         output = list(set(extract_variables(diagrams) + list(stateValue.keys()) + key_variables))
+         output = list(set(extract_variables(diagrams) + list(stateValue.keys()) + keyVariables))
       )
       
       simulationDone = True
@@ -560,11 +559,11 @@ def simu(simulationTime=simulationTime, mode='Initial', options=opts_std, diagra
             validate = False,
             start_time = prevFinalTime,
             stop_time = prevFinalTime + simulationTime,
-            output_interval = simulationTime/options['ncp'],
+            output_interval = simulationTime/options['NCP'],
             record_events = True,
             start_values = start_values,
             fmi_call_logger = None,
-            output = list(set(extract_variables(diagrams) + list(stateValue.keys()) + key_variables))
+            output = list(set(extract_variables(diagrams) + list(stateValue.keys()) + keyVariables))
          )
       
          simulationDone = True
