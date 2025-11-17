@@ -157,6 +157,7 @@ parValue['Ks'] = 0.1
 
 parValue['feedtank.S_in'] = 300.0
 parValue['feedtank.V_start'] = 10.0
+parValue['F_start'] = 0
 parValue['mu_feed'] = 0.10
 parValue['t_startExp'] = 3.0
 parValue['F_startExp'] = 1.33e-3
