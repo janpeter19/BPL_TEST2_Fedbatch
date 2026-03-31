@@ -67,6 +67,7 @@
 # 2025-11-07 - FMU-explore 1.0.2
 # 2025-11-14 - FMU-explore 1.0.2 corrected
 # 2025-11-19 - FMU-explore 1.0.2 corrected again parLocation() with sheets as argument
+# 2026-03-31 - FMU-explore 1.0.3
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -112,8 +113,8 @@ elif platform.system() == 'Linux':
          fmu_model ='BPL_TEST2_Fedbatch_linux_om_cs.fmu'    
          model = load_fmu(fmu_model, log_level=0) 
       if flag_type in ['ME','me']:         
-#        fmu_model ='BPL_TEST2_Fedbatch_linux_om_me.fmu'   
-         fmu_model ='BPL_TEST2_Fedbatch_linux_2404_om_me.fmu'   
+         fmu_model ='BPL_TEST2_Fedbatch_linux_om_me.fmu'   
+#        fmu_model ='BPL_TEST2_Fedbatch_linux_2404_om_me.fmu'   
          model = load_fmu(fmu_model, log_level=0)
    else:    
       print('There is no FMU for this platform')
@@ -374,7 +375,7 @@ def describe(name, decimals=3):
 
 #------------------------------------------------------------------------------------------------------------------
 #  General code 
-FMU_explore = 'FMU-explore version 1.0.2'
+FMU_explore = 'FMU-explore version 1.0.3'
 #------------------------------------------------------------------------------------------------------------------
 
 # Define function par() for parameter update
@@ -616,6 +617,9 @@ def describe_general(name, decimals, parLocation=parLocation):
       unit = 'h'
       print(description,'[',unit,']')
       
+   elif name == 'process':
+      print(model.get_description())    
+      
    elif name in parLocation.keys():
       description = model.get_variable_description(parLocation[name])
       value = model.get(parLocation[name])[0]
@@ -699,6 +703,13 @@ def system_info():
    print(' -MSL:', MSL_version)    
    print(' -Description:', BPL_version)   
    print(' -Interaction:', FMU_explore)
+   
+def SDG(explanation=False):
+  if explanation:
+    print('"Soli Deo Gloria"')
+    print(' It is latin and means "To the honour of God".') 
+    print(' The great composer Johan Sebastian Bach used to end his compositions with this small remark SDG.')
+    print(' And I like to do that too :).')    
    
 #------------------------------------------------------------------------------------------------------------------
 #  Startup
