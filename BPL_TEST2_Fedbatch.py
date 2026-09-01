@@ -70,6 +70,10 @@ elif flag_vendor in ['OM', 'om']:
    BPL_version = 'Bioprocess Library version 2.3.2' 
 else:    
    print('There is no FMU for this platform')
+   
+#------------------------------------------------------------------------------------------------------------------
+#  Specific application constructs: stateValue, parValue, parLocation, parCheck, diagrams, ax, lines
+#------------------------------------------------------------------------------------------------------------------
 
 # Simulation time
 simulationTime = 5.0
@@ -88,8 +92,6 @@ component_list_minimum = ['bioreactor', 'bioreactor.culture']
 
 # Provide process diagram on disk
 fmu_process_diagram ='BPL_TEST2_Fedbatch_process_diagram_om.png'
-
-#------------------------------------------------------------------------------------------------------------------
 
 # Create dictionaries parValue[] and parLocation[]
 parValue = {}
@@ -138,10 +140,6 @@ parCheck.append("parValue['V_start'] > 0")
 parCheck.append("parValue['VX_start'] >= 0")
 parCheck.append("parValue['VS_start'] >= 0")
 parCheck.append("parValue['t_startExp'] >= 0")
-
-#------------------------------------------------------------------------------------------------------------------
-#  Specific application constructs: parValue, parLocation, parCheck, diagrams, ax, lines
-#------------------------------------------------------------------------------------------------------------------
 
 # Create list of diagrams to be plotted by simu()
 diagrams = []
