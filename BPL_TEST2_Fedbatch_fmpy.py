@@ -72,35 +72,6 @@ simulationTime = 5.0
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
 
-# Create stateValue that later will be used to store final state and used for initialization in 'cont':
-stateValue =  {}
-stateValue = {variable.derivative.name:None for variable in model_description.modelVariables \
-                                            if variable.derivative is not None}
-stateValue.update(timeDiscreteStates) 
-
-stateValueInitial = {}
-for key in stateValue.keys():
-    if not key[-1] == ']':
-         if key[-3:] == 'I.y':
-            stateValueInitial[key] = key[:-10]+'I_start'
-         elif key[-3:] == 'D.x':
-            stateValueInitial[key] = key[:-10]+'D_start'
-         else:
-            stateValueInitial[key] = key+'_start'
-    elif key[-3] == '[':
-        stateValueInitial[key] = key[:-3]+'_start'+key[-3:]
-    elif key[-4] == '[':
-        stateValueInitial[key] = key[:-4]+'_start'+key[-4:]
-    elif key[-5] == '[':
-        stateValueInitial[key] = key[:-5]+'_start'+key[-5:] 
-    else:
-        print('The state vector has more than 1000 states')
-        break
-
-stateValueInitialLoc = {}
-for value in stateValueInitial.values():
-    stateValueInitialLoc[value] = value
-
 # Define a minimal compoent list of the model as a starting point for describe('parts')
 component_list_minimum = ['bioreactor', 'bioreactor.culture']
 
