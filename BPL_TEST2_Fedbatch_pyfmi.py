@@ -1,8 +1,9 @@
-# setup applicateion data BPL_TEST2_Fedbatch 
+# Setup applicateion data BPL_TEST2_Fedbatch_pyfmi 
 # Author: Jan Peter Axelsson
 #------------------------------------------------------------------------------------------------------------------
 # 2026-08-21 - Created
 # 2026-09-09 - Drop global prevFinalTime and let it be just interal to fmu_explore_pyfmi
+# 2026-09-14 - Move definition of stateValue to the fmu_explore_pyfmi module ver 1.2.0
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -81,11 +82,6 @@ simulationTime = 5.0
 
 # Dictionary of time discrete states
 timeDiscreteStates = {} 
-
-# Create stateValue that later will be used to store final state and used for initialization in 'cont':
-stateValue =  {}
-stateValue = model.get_states_list()
-stateValue.update(timeDiscreteStates)
 
 # Define a minimal compoent list of the model as a starting point for describe('parts')
 component_list_minimum = ['bioreactor', 'bioreactor.culture']
