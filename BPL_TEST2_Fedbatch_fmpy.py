@@ -3,6 +3,7 @@
 #------------------------------------------------------------------------------------------------------------------
 # 2026-09-07 - Created
 # 2026-09-09 - Drop global prevFinalTime and let it be just interal to fmu_explore_fmpy
+# 2026-09-17 - Decrease the framework to what is necessary and move matlotlib to the other setup-file
 #------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------------------------------------
@@ -10,11 +11,8 @@
 #------------------------------------------------------------------------------------------------------------------
 
 # Setup framework
-import sys
 import platform
 import locale
-import numpy as np 
-import matplotlib.pyplot as plt 
 from fmpy import simulate_fmu
 from fmpy import read_model_description
 

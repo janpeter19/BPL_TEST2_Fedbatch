@@ -1,9 +1,16 @@
-# setup application functions BPL_TEST2_Fedbatch, dependent on previous import of functions from fmu_explore 
+# Setup application functions BPL_TEST2_Fedbatch, dependent on previous import of functions from fmu_explore 
 # Author: Jan Peter Axelsson
 #------------------------------------------------------------------------------------------------------------------
 # 2026-08-21 - Created
 # 2026-08-28 - Polished
+# 2026-09-17 - Bring in matplotlib.pylot since used here
 #------------------------------------------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------------------------------------------
+#  Framework
+#------------------------------------------------------------------------------------------------------------------
+
+import matplotlib.pyplot as plt 
 
 #------------------------------------------------------------------------------------------------------------------
 #  Specific application functions: newplot(), describe()
