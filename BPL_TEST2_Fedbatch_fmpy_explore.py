@@ -1,7 +1,6 @@
-# Figure - Simulation of fedbatch reactor 
-#          with functions added to facilitate explorative simulation work
-#
+# Setup application functions BPL_TEST2_Fedbatch, dependent on previous import of functions from fmu_explore 
 # Author: Jan Peter Axelsson
+
 #------------------------------------------------------------------------------------------------------------------
 # 2026-09-07 - Created
 # 2026-09-17 - Bring in matplotlib.pylot since used here
