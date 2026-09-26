@@ -6,7 +6,7 @@
 # 2026-08-28 - Polished
 # 2026-09-17 - Brought in matplotlib.pylot since used here
 # 2026-09-18 - Brought numpy back here since used in several notebooks
-# 2026-09-21 - Change indentaiton from 3 spaces to 4
+# 2026-09-26 - Change indentaiton from 3 spaces to 4 using black
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 #  Specific application functions: newplot(), describe()
 # -------------------------------------------------------------------------------------------------
 
-# Define standard diagrams
+
 def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
     """Standard plot window
      title = ''
@@ -177,7 +177,6 @@ def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
         print("Plot window type not correct")
 
 
-# Define describtions partly coded here and partly taken from the FMU
 def describe(name, decimals=3):
     """Look up description of culture, media, 
        as well as parameters and variables in the model code"""

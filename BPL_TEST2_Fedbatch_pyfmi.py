@@ -6,7 +6,7 @@
 # 2026-09-14 - Move definition of stateValue to the fmu_explore_pyfmi module ver 1.2.0
 # 2026-09-17 - Decrease the framework to what is necessary, move matlotlib to the other setup-file
 # 2026-09-21 - Change indentaiton from 3 spaces to 4
-# -------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------   
 
 # -------------------------------------------------------------------------------------------------
 #  Framework
