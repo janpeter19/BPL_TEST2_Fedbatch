@@ -82,10 +82,10 @@ parValue["Ks"] = 0.1
 parValue["feedtank.S_in"] = 300.0
 parValue["feedtank.V_start"] = 10.0
 parValue["F_start"] = 0
-parValue["mu_feed"] = 0.10
+parValue["mu_feed"] = 0.20
 parValue["t_startExp"] = 3.0
-parValue["F_startExp"] = 1.33e-3
-parValue["F_max"] = 0.3
+parValue["F_startExp"] = 0.12
+parValue["F_max"] = 3.0
 
 parLocation = {}
 parLocation["V_start"] = "bioreactor.V_start"
