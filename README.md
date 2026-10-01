@@ -7,7 +7,7 @@ Basic example of fedbatch cultivation using an FMU from Bioprocess Library *for*
 You start up the notebook in Colab by pressing here
 [start BPL notebook](https://colab.research.google.com/github/janpeter19/BPL_TEST2_Fedbatch/blob/main/BPL_TEST2_Fedbatch_colab.ipynb)
 or alternatively
-[start BPL notebook with FMPy](https://colab.research.google.com/github/janpeter19/BPL_TEST2_Fedbatch/blob/main/BPL_TEST2_Fedbatch_fmpy_colab.ipynb).
+[start BPL notebook with FMPy](https://colab.research.google.com/github/janpeter19/BPL_TEST2_Fedbatch/blob/main/BPL_TEST2_Fedbatch_fmpy_colab.ipynb)
 or (experimentally)
 [start BPL notebook with OMSimulator](https://colab.research.google.com/github/janpeter19/BPL_TEST2_Fedbatch/blob/main/BPL_TEST2_Fedbatch_oms_colab.ipynb).
 Then you in the menu choose Runtime/Run all. 
