@@ -58,23 +58,23 @@ def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
 
         # List of commands to be executed by simu() after a simulation
         diagrams.clear()
+#        diagrams.append(
+#            "ax[0].plot(t,sim_res['bioreactor.c[1]'],color='r',linestyle=linetype)"
+#        )
         diagrams.append(
-            "ax[0].plot(t,sim_res['bioreactor.c[1]'],color='r',linestyle=linetype)"
-        )
-        diagrams.append(
-            "ax[0].plot(t,sim_res['bioreactor.c[2]'],color='b',linestyle=linetype)"
+            "ax[0].plot(t, sim_res['data_2'][3], color='b',linestyle=linetype)"
         )
         diagrams.append(
             "ax[0].legend(['X','S'])"
         )
         diagrams.append(
-            "ax[1].plot(t,sim_res['bioreactor.culture.q[1]'],color='r',linestyle=linetype)"
+            "ax[1].plot(t, sim_res['data_2'][26], color='r',linestyle=linetype)"
         )
         diagrams.append(
-            "ax[2].plot(t,sim_res['bioreactor.inlet[1].F'],color='b',linestyle=linetype)"
-        )
+            "ax[2].plot(t, sim_res['data_2'][18], color='b',linestyle=linetype)"
+        )  # or 5
         diagrams.append(
-            "ax[3].plot(t,sim_res['bioreactor.V'],color='b',linestyle=linetype)"
+            "ax[3].plot(t, sim_res['data_2'][1], color='b',linestyle=linetype)"
         )
 
     else:
