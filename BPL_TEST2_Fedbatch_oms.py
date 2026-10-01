@@ -46,11 +46,7 @@ elif platform.system() == "Linux":
 opts_std = None
 
 # Provide various MSL and BPL versions
-if flag_vendor in ["JM", "jm"]:
-#    MSL_usage = model.get("MSL.usage")[0]
-#    MSL_version = model.get("MSL.version")[0]
-#    BPL_version = model.get("BPL.version")[0]
-elif flag_vendor in ["OM", "om"]:
+if flag_vendor in ["OM", "om"]:
     MSL_usage = "4.1.0 - used components: RealInput, RealOutput"
     MSL_version = "4.1.0"
     BPL_version = "Bioprocess Library version 2.3.2"
