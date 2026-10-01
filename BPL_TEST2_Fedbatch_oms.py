@@ -26,7 +26,7 @@ if platform.system() == "Windows":
     flag_vendor = "JM"
     flag_type = "CS"
     fmu_model = "BPL_TEST2_Fedbatch_windows_jm_cs.fmu"
-    model = load_fmu(fmu_model, log_level=0)
+#    model = load_fmu(fmu_model, log_level=0)
 elif platform.system() == "Linux":
     flag_vendor = "OM"
     flag_type = "ME"
@@ -34,11 +34,11 @@ elif platform.system() == "Linux":
         print("Linux - run FMU pre-compiled OpenModelica")
         if flag_type in ["CS", "cs"]:
             fmu_model = "BPL_TEST2_Fedbatch_linux_om_cs.fmu"
-            model = load_fmu(fmu_model, log_level=0)
+#            model = load_fmu(fmu_model, log_level=0)
         if flag_type in ["ME", "me"]:
             fmu_model = "BPL_TEST2_Fedbatch_linux_om_me.fmu"
 #           fmu_model ='BPL_TEST2_Fedbatch_linux_2404_om_me.fmu'
-            model = load_fmu(fmu_model, log_level=0)
+#           model = load_fmu(fmu_model, log_level=0)
     else:
         print("There is no FMU for this platform")
 
