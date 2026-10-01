@@ -84,7 +84,7 @@ parValue["feedtank.V_start"] = 10.0
 parValue["F_start"] = 0
 parValue["mu_feed"] = 0.15
 parValue["t_startExp"] = 3.0
-parValue["F_startExp"] = 0.006
+parValue["F_startExp"] = 0.001
 parValue["F_max"] = 0.3
 
 parLocation = {}
