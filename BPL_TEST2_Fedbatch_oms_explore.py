@@ -5,6 +5,7 @@
 # 2026-10-01 - Created
 # 2026-10-01 - Import for oms related handling
 # 2026-10-07 - Diagrams modified for DyMat
+# 2026-10-07 - Rudimentary function descxribe()
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -80,6 +81,19 @@ def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
 
     else:
         print("Plot window type not correct")
+
+
+def describe(name, decimals=3):
+    """Look up description of culture, media, as well as parameters and variables in the model code"""
+
+    if name == 'culture':
+        print('Simplified text book model - only substrate S and cell concentration X')
+
+    elif name in ['MSL']:
+        describe_MSL()
+
+    else:
+        dummy = decimals #describe_general(name, decimals)
 
 # -------------------------------------------------------------------------------------------------
 #  Startup
