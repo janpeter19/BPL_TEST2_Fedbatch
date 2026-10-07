@@ -3,7 +3,8 @@
 # Author: Jan Peter Axelsson
 # -------------------------------------------------------------------------------------------------
 # 2026-10-01 - Created
-# 2026-10-01 - Import for oms relatted handling
+# 2026-10-01 - Import for oms related handling
+# 2026-10-07 - Diagrams modified for DyMat
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -59,22 +60,22 @@ def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
         # List of commands to be executed by simu() after a simulation
         diagrams.clear()
         diagrams.append(
-            "ax[0].plot(t, sim_res['data_2'][12], color='r', linestyle=linetype)"
+            "ax[0].plot(t, sim_res['Fedbatch.bioreactor.c[1]'], color='r', linestyle=linetype)"
         )
         diagrams.append(
-            "ax[0].plot(t, sim_res['data_2'][13], color='b', linestyle=linetype)"
+            "ax[0].plot(t, sim_res['Fedbatch.bioreactor.c[2]'], color='b', linestyle=linetype)"
         )
         diagrams.append(
             "ax[0].legend(['X','S'])"
         )
         diagrams.append(
-            "ax[1].plot(t, sim_res['data_2'][26], color='r',linestyle=linetype)"
+            "ax[1].plot(t, sim_res['Fedbatch.bioreactor.culture.q[1]'], color='r',linestyle=linetype)"
         )
         diagrams.append(
-            "ax[2].plot(t, sim_res['data_2'][18], color='b',linestyle=linetype)"
+            "ax[2].plot(t, sim_res['Fedbatch.bioreactor.inlet[1].F'], color='b',linestyle=linetype)"
         )  # or 5
         diagrams.append(
-            "ax[3].plot(t, sim_res['data_2'][1], color='b',linestyle=linetype)"
+            "ax[3].plot(t, sim_res['Fedbatch.bioreactor.V'], color='b',linestyle=linetype)"
         )
 
     else:
