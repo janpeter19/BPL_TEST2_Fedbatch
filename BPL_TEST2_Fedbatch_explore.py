@@ -7,6 +7,7 @@
 # 2026-09-17 - Brought in matplotlib.pylot since used here
 # 2026-09-18 - Brought numpy back here since used in several notebooks
 # 2026-09-26 - Change indentaiton from 3 spaces to 4 using black
+# 2026-10-16 - Added clean-up section at the end
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -215,3 +216,16 @@ def describe(name, decimals=3):
 # -------------------------------------------------------------------------------------------------
 
 FMU_explore_info()
+
+
+#------------------------------------------------------------------------------------------------------------------
+#  Clean-up
+#------------------------------------------------------------------------------------------------------------------
+
+del parValue, parLocation, parCheck
+del model, fmu_model, fmu_process_diagram
+del MSL_usage, MSL_version, BPL_version
+del opts_std, simulationTime, timeDiscreteStates
+del flag_type, flag_vendor
+del lines
+

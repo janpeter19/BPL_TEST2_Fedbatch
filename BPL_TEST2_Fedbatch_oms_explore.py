@@ -6,6 +6,7 @@
 # 2026-10-01 - Import for oms related handling
 # 2026-10-07 - Diagrams modified for DyMat
 # 2026-10-07 - Rudimentary function descxribe()
+# 2026-10-16 - Added clean-up section at the end
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -100,3 +101,15 @@ def describe(name, decimals=3):
 # -------------------------------------------------------------------------------------------------
 
 FMU_explore_info()
+
+
+#------------------------------------------------------------------------------------------------------------------
+#  Clean-up
+#------------------------------------------------------------------------------------------------------------------
+
+del parValue, parLocation, parCheck
+del fmu_model, fmu_process_diagram
+del MSL_usage, MSL_version, BPL_version
+del options, simulationTime, timeDiscreteStates
+del flag_type, flag_vendor
+del lines
