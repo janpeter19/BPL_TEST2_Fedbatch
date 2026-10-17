@@ -17,10 +17,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # -------------------------------------------------------------------------------------------------
 #  Specific application functions: newplot(), describe()
 # -------------------------------------------------------------------------------------------------
-
 
 def newplot(title="Fedbatch cultivation", plotType="TimeSeries"):
     """Standard plot window
