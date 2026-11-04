@@ -12,8 +12,6 @@ or (experimentally)
 [start BPL notebook with OMSimulator](https://colab.research.google.com/github/janpeter19/BPL_TEST2_Fedbatch/blob/main/BPL_TEST2_Fedbatch_oms_colab.ipynb).
 Then you in the menu choose Runtime/Run all. 
 
-Then you in the menu choose Runtime/Run all. 
-
 The installation takes just a few minutes. The subsequent execution of the simulations of microbial growth take just a second or so. You can continue in the notebook and make new simulations and follow the examples given.
 
 See also the related repositories: BPL_YEAST_AIR_Fedbatch and BPL_CHO_Fedbatch.
