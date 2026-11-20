@@ -7,6 +7,7 @@
 # 2026-10-07 - Diagrams modified for DyMat
 # 2026-10-07 - Rudimentary function descxribe()
 # 2026-10-16 - Added clean-up section at the end
+# 2026-11-20 - Added slightle extended rudimentary describe()
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ def describe(name, decimals=3):
         describe_MSL()
 
     else:
-        dummy = decimals #describe_general(name, decimals)
+        Application.describe_general(name, decimals)
 
 # -------------------------------------------------------------------------------------------------
 #  Startup
