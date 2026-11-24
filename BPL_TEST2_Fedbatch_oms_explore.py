@@ -8,6 +8,7 @@
 # 2026-10-07 - Rudimentary function descxribe()
 # 2026-10-16 - Added clean-up section at the end
 # 2026-11-20 - Added slightle extended rudimentary describe()
+# 2026-11-24 - Bring descdribe_parts() into describe()
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -90,6 +91,9 @@ def describe(name, decimals=3):
 
     if name == 'culture':
         print('Simplified text book model - only substrate S and cell concentration X')
+
+    elif name in ["parts"]:
+        describe_parts(component_list_minimum)
 
     elif name in ['MSL']:
         describe_MSL()
